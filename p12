@@ -1,51 +1,38 @@
-#include <stdio.h>
-#include <stdlib.h>
-#define MAX 5
-#define mod(x) x%MAX
-void linear_prob(int a[],int num,int key)
-{
-    if(a[key]==-1)
-        a[key]=num;
-    else
-    {
-        printf("\nCollision detected!!");
-        int i;
-        for(i=mod(key+1);i!=key;i=mod(++i))
-            if(a[i]==-1)
-            break;
-        if(i!=key)
-        {
-            printf("\nCollision avoided successfully\n");
-            a[i]=num;
-        }
-        else
-            printf("\nHash table is full\n");
-    }
+#include<stdio.h>
+#include<stdlib.h>
+int key[20], n, m;
+int * ht, index;
+int count = 0;
+void insert(int key) {
+index = key % m;
+while (ht[index] != -1) {
+index = (index + 1) % m;
 }
-void display(int a[])
-{
-    short ch,i;
-    printf("\n1.Filtered display\n2.Display all\nEnter choice:");
-    scanf("%d",&ch);
-    printf("\nHash table is :\n");
-    for(i=0;i<MAX;i++)
-        if(a[i]>0||ch-1)
-            printf("%d  %d\n",i,a[i]);
+ht[index] = key;
+count++;
 }
-int main()
-{
-    int a[MAX],num,i;
-    printf("\nCollision handling by linear probing");
-    for(i=0;i<MAX;a[i++]=-1);
-    do
-    {
-        printf("\nEnter the data:");
-        scanf("%4d",&num);
-        linear_prob(a,num,mod(num));
-        printf("Do u wish to continue(1/0):");
-        scanf("%d",&i);
-    }while(i);
-    display(a);
-    return 0;
+void display() {
+int i;
+if (count == 0) {
+printf("\nHash Table is empty");
+return;
+}
+printf("\nHash Table contents are:\n ");
+for (i = 0; i < m; i++)
+printf("\n T[%d] --> %d ", i, ht[i]);
+}
+void main() {
+int i;
+printf("\nEnter the number of employee records (N) :");
+scanf("%d", & n);printf("\nEnter the two digit memory locations (m) for hash table:");
+scanf("%d", & m);ht = (int * ) malloc(m * sizeof(int));
+for (i = 0; i < m; i++)
+ht[i] = -1;printf("\nEnter the four digit key values (K) for N Employee Records:\n ");
+for (i = 0; i < n; i++)
+scanf("%d", & key[i]);for (i = 0; i < n; i++) {
+if (count == m) {
+printf("\n~~~Hash table is full. Cannot insert the record %d key~~~", i + 1);
+break;
+}
 
-}
+  
