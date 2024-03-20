@@ -1,0 +1,35 @@
+#include<stdio.h>
+void main()
+{
+  char s[50],pat[20],rep[20],res[50];
+  int i,j,k,l,flag;
+  printf("\nEnte the main string:");
+  gets(s);
+  printf("\nEnter the pat string:");
+  gets(pat);
+  printf("\nEnter the replace string:");
+  gets(rep);
+  for(i=0,k=0;s[i]!='\0';i++)
+  {
+    flag=1;
+    for(j=0;pat[j]!='\0';j++)
+      if(s[i+j]!=pat[j])
+        flag=0;
+    l=j;
+    if(flag)
+    {
+      for(j=0;rep[j]!='\0';j++,k++)
+        res[k]=rep[j];
+      i+=l-1;
+    }
+    else
+      res[k++]=s[i];
+  }
+  res[k]='\0';
+  printf("%s",res);
+printf("\nthe string before pattern match is:\n %s",s);
+if(flag==1)
+printf("\nthe string after pattern match and replace is:\n %s",res);
+else
+printf("\npattern string is not found");
+}
