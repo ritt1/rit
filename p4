@@ -1,68 +1,42 @@
 #include<stdio.h>
-#include<string.h>
-int F(char symbol)
+#define INF 999
+void dijkstra(int c[10][10],int n,int s,int d[10])
 {
- switch (symbol)
+ int v[10],min,u,i,j;
+ for(i=1; i<=n; i++)
  {
- case '+':
- case '-':return 2;
- case '*':
- case '/':
- case '%':return 4;
- case '^':
- case '$':return 5;
- case '(':return 0;
- case '#':return -1;
- default :return 8;
+ d[i]=c[s][i];
+ v[i]=0;
+ }
+ v[s]=1;
+ for(i=1; i<=n; i++)
+ {
+ min=INF;
+ for(j=1; j<=n; j++)
+ if(v[j]==0 && d[j]<min)
+ {
+ min=d[j];
+ u=j;
+ }
+ v[u]=1;
+ for(j=1; j<=n; j++)
+ if(v[j]==0 && (d[u]+c[u][j])<d[j])
+ d[j]=d[u]+c[u][j];
  }
 }
-int G(char symbol)
+int main()
 {
- switch (symbol)
- {
- case '+':
- case '-':return 1;
- case '*':
- case '/':
- case '%':return 3;
- case '^':
- case '$':return 6;
- case '(':return 3;
- case ')':return 0;
- default :return 7;
- }
-}
-
-void infix_postfix(char infix[], char postfix[])
-{
-int top=-1, j=0, i;
-char s[30], symbol;
-s[++top] = '#';
-for(i=0; i < strlen(infix); i++)
-{
- symbol = infix[i];
- while (F(s[top]) > G(symbol))
- {
-  postfix[j] = s[top--];
-  j++;
- }
- if(F(s[top]) != G(symbol))
-  s[++top] = symbol;
- else
-  top--;
-}
-while(s[top] != '#')
- postfix[j++] = s[top--];
-postfix[j] = '\0';
-}
-void main()
-{
-char infix[20], postfix[20];
-printf("\nEnter a valid infix expression\n") ;
-scanf ("%s", infix) ;
-infix_postfix (infix, postfix);
-printf("\nThe infix expression is:\n");
-printf ("%s",infix);
-printf("\nThe postfix expression is:\n");
-printf ("%s",postfix) ;
+ int c[10][10],d[10],i,j,s,sum,n;
+ printf("\nEnter n value:");
+ scanf("%d",&n);
+ printf("\nEnter the graph data:\n");
+ for(i=1; i<=n; i++)
+ for(j=1; j<=n; j++)
+ scanf("%d",&c[i][j]);
+ printf("\nEnter the souce node:");
+ scanf("%d",&s);
+ dijkstra(c,n,s,d);
+ for(i=1; i<=n; i++)
+ printf("\nShortest distance from %d to %d is %d",s,i,d[i]);
+ return 0;
 }
