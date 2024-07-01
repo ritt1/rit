@@ -1,64 +1,47 @@
-(a)
 #include<stdio.h>
-#include<math.h>
-#include<string.h>
-float compute(char symbol, float op1, float op2)
+#include<conio.h>
+int temp[10],k=0;
+void sort(int a[][10],int id[],int n)
 {
- switch (symbol)
+ int i,j;
+ for(i=1; i<=n; i++)
  {
-  case '+': return op1 + op2;
-  case '-': return op1 - op2;
-  case '*': return op1 * op2;
-  case '/': return op1 / op2;
-  case '$':
-  case '^': return pow(op1,op2);
-  default : return 0;
+ if(id[i]==0)
+ {
+ id[i]=-1;
+ temp[++k]=i;
+ for(j=1; j<=n; j++)
+ {
+ if(a[i][j]==1 && id[j]!=-1)
+ id[j]--;
+ }
+ i=0;
+ }
  }
 }
 void main()
 {
-float s[20], res, op1, op2;
-int top, i;
-char postfix[20], symbol;
-printf("\nEnter the postfix expression:\n");
-scanf ("%s", postfix);
-top=-1;
-for (i=0; i<strlen(postfix) ;i++)
-{
-symbol = postfix[i];
-if(isdigit(symbol))
- s[++top]=symbol - '0';
-else
+ int a[10][10],id[10],n,i,j;
+ printf("\nEnter the n value:");
+ scanf("%d",&n);
+ for(i=1; i<=n; i++)
+ id[i]=0;
+ printf("\nEnter the graph data:\n");
+ for(i=1; i<=n; i++)
+ for(j=1; j<=n; j++)
  {
- op2 = s[top--];
- op1 = s[top--];
- res = compute(symbol, op1, op2);
- s[++top] = res;
+ scanf("%d",&a[i][j]);
+ if(a[i][j]==1)
+ id[j]++;
  }
-}
-res = s[top--];
-printf("\nThe result is : %f\n", res);
-
-}
-(b)
-#include<stdio.h>
-#include<math.h>
-void tower(int n, int source, int temp, int destination);
-void tower(int n, int source, int temp, int destination)
-{
-if(n == 0)
- return;
-tower(n-1, source, destination, temp);
-printf("\nMove disc %d from %c to %c", n, source, destination);
-tower(n-1, temp, source, destination);
-}
-void main ()
-{
-int n;
-printf("\nEnter the number of discs: \n\n");
-scanf("%d", &n);
-printf("\nThe sequence of moves involved in the Tower of Hanoi are\n");
-tower(n, 'A', 'B', 'C');
-printf("\n\nTotal Number of moves are: %d\n", (int)pow(2,n)-1);
-
+ sort(a,id,n);
+ if(k!=n)
+ printf("\nTopological ordering not possible");
+ else
+ {
+ printf("\nTopological ordering is:");
+ for(i=1; i<=k; i++)
+ printf("%d ",temp[i]);
+ }
+ getch();
 }
