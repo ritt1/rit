@@ -1,53 +1,61 @@
-#include <stdio.h>
-#include <stdlib.h> 
-struct Day {
-char * dayName; 
-int date;
-char * activity; 
-};
-void create(struct Day * day) {
-day -> dayName = (char * ) malloc(sizeof(char) * 20); 
-day -> activity = (char * ) malloc(sizeof(char) * 100); 
-printf("Enter the day name:");
-scanf("%s", day -> dayName);
-printf("Enter the date:");
-scanf("%d", & day -> date);
-printf("Enter the activity for the day:");
-scanf(" %[^\n]s", day -> activity); 
+#define INF 999
+#define MAX 100
+int p[MAX], c[MAX][MAX], t[MAX][2];
+int find(int v)
+{
+while (p[v])
+v = p[v];
+return v;
 }
-void read(struct Day * calendar, int size) {
-for (int i = 0; i < size; i++) {
-printf("Enter details for Day %d:\n", i + 1);
-create( & calendar[i]);
+void union1(int i, int j)
+{
+p[j] = i;
 }
-}
-void display(struct Day * calendar, int size) {
-printf("\nWeek's Activity Details:\n");
-for (int i = 0; i < size; i++) {
-printf("Day %d:\n", i + 1);
-printf("Day Name: %s\n", calendar[i].dayName);
-printf("Date: %d\n", calendar[i].date);
-printf("Activity: %s\n", calendar[i].activity);
-printf("\n");
-}
-}
-void freeMemory(struct Day * calendar, int size) {
-for (int i = 0; i < size; i++) {
-free(calendar[i].dayName);
-free(calendar[i].activity);
+void kruskal(int n)
+{
+int i, j, k, u, v, min, res1, res2, sum = 0;
+for (k = 1; k < n; k++)
+{
+min = INF;
+for (i = 1; i < n - 1; i++)
+{
+for (j = 1; j <= n; j++)
+{
+if (i == j) continue;
+if (c[i][j] < min)
+{
+u = find(i);
+v = find(j);
+if (u != v)
+{
+res1 = i;
+res2 = j;
+min = c[i][j];
 }
 }
-int main() {
-int size;
-printf("Enter the number of days in the week:");
-scanf("%d", & size);
-struct Day * calendar = (struct Day * ) malloc(sizeof(struct Day) * size);// Check 
-if (calendar == NULL) {
-printf("Memory allocation failed. Exiting program.\n");
-return 1;
 }
-read(calendar, size);
-display(calendar, size);
-freeMemory(calendar, size);
-free(calendar);return 0;
+}
+union1(res1, find(res2));
+t[k][1] = res1;
+t[k][2] = res2;
+sum = sum + min;
+}
+printf("\nCost of spanning tree is=%d", sum);
+printf("\nEdgesof spanning tree are:\n");
+for (i = 1; i < n; i++)
+printf("%d -> %d\n", t[i][1], t[i][2]);
+}
+int main()
+{
+int i, j, n;
+printf("\nEnter the n value:");
+scanf("%d", & n);
+for (i = 1; i <= n; i++)
+p[i] = 0;
+printf("\nEnter the graph data:\n");
+for (i = 1; i <= n; i++)
+for (j = 1; j <= n; j++)
+scanf("%d", & c[i][j]);
+kruskal(n);
+return 0;
 }
