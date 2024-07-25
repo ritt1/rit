@@ -1,0 +1,97 @@
+\documentclass{article}
+\usepackage{tikz}
+\begin{document}
+\begin{center}
+    \Large{\textbf{Hierarchy of Linux distributions}}
+    \end{center}
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[every node/.style={shape=rectangle,rounded corners,draw,align=center}]
+\path[draw,thick,-]
+node(root)[red]{GNU/Linux}
+[sibling distance=45mm,level distance=25mm]
+child{node[cyan]{Debian}
+[sibling distance=25mm,level distance=25mm]
+    child{node[cyan]{Ubuntu}}
+    child{node[cyan]{Linux Mint}}
+%   child{node{Elementary}}
+}
+child{node[magenta]{RedHat}
+[sibling distance=25mm,level distance=25mm]
+    child{node[magenta]{Fedora}}
+    child{node[magenta]{O penSuse}}
+}
+child{node[blue]{Arch}
+    [sibling distance=25mm,level distance=25mm]
+        child{node[blue]{Manjaro}}
+        child{node[blue]{EndeavourOS}}
+};
+   
+\end{tikzpicture}
+\caption{GNU/Linux Operating System Family}
+\end{figure}
+\pagebreak
+\begin{center}
+    \Large{\textit{SUV Cars}}
+\end{center}
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[every node/.style={shape=rectangle,rounded corners,draw,align=center}]
+\path[draw,thick,-1]
+[grow=-45]
+node(root)[red]{SUV}
+[sibling distance=45mm,level distance=25mm]
+
+child{node[cyan]{Tata}
+[sibling distance=25mm,level distance=25mm]
+    child{node[magenta]{Nexon}}
+    child{node[magenta]{Punch}}
+%   child{node{elementary}}
+}
+child{node[magenta]{Volkswagen}
+[sibling distance=25mm,level distance=25mm]}
+    child{node[magenta]{Taigun}}
+    child{node[magenta]{Virtus}}
+}
+child{node[blue]{Maruti}
+    [sibling distance=25mm,level distance=25mm]}
+        child{node[blue]{Breeza}}
+        child{node[blue]{Vitara}}
+};
+\end{tikzpicture}
+\caption{Car Brands Heirarchy}
+\end{figure}
+\end{document}
+\documentclass{article}
+\begin{document}
+    \usepackage{tikz}
+    \centering
+        %Define styles for nodes
+            \tikzstyle{level1}=[level distance=4cm,sibling distance=6cm]
+            \tikzstyle{level1}=[level distance=6cm,sibling distance=3cm]
+        %Begin Tikz Picture
+        \begin{tikzpicture}[grow=down,sloped]
+            %Root node
+            \node{Root}
+            %First child
+            child{
+                node{Child1}%First child node
+                child{
+                        node{Subchild 1}%Subchild node
+                    }
+                child{
+                        node{Subchild 2}%Subchild node
+                }
+            }
+            %Second child
+                child{
+                        node{child 2}%Second child node
+                child{
+                        node{Subchild 1}%Subchild node
+                    }
+                child{
+                        node{Subchild 2}%Subchild node
+                    }
+                };
+        \end{tikzpicture}
+\end{document}
