@@ -1,0 +1,12 @@
+\documentclass{article} 
+\usepackage[utf8]{inputenc} 
+\begin{document} 
+\begin{tabular}{|c|c|c|c|c|c|} 
+\hline 
+$Sl.No$ & $USN$& $Student name$ &\multicolumn{3}{c|}{Marks}\\ \cline{4-6} 
+& & & Subject1 & Subject2 &Subject3 \\ \hline  
+1& 4XX22XX001&Name1 &89 &60 &90 \\ \hline 
+2& 4XX22XX002&Name2 &78 &45 &98 \\ \hline 
+3& 4XX22XX003&Name3 &67 &55 &59 \\ \hline 
+\end{tabular} 
+\end{document} 
