@@ -1,0 +1,24 @@
+ \documentclass{standalone} 
+\usepackage{tikz} 
+\usetikzlibrary{graphs.standard} 
+\begin{document} 
+  \begin{tikzpicture} 
+                    \graph[nodes={circle,draw},simple] 
+                    { 
+                               subgraph K_n [n=8,clockwise]; 
+                    }; 
+\end{tikzpicture} 
+\begin{tikzpicture} 
+   \graph[nodes={circle,draw},simple] 
+{ 
+           subgraph K_n [n=8, clockwise] -> mid; 
+}; 
+\end{tikzpicture} 
+\begin{tikzpicture} 
+\graph[nodes={circle,draw},simple] 
+{ 
+subgraph K_n [n=8,clockwise];  
+8 -!- 3 -!- 4 -!- 5 -!- 2; 
+}; 
+\end{tikzpicture} 
+\end{document} 
