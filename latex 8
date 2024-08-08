@@ -1,13 +1,9 @@
 \documentclass{article} 
 \usepackage{amsthm}  
 \newtheorem{theorem}{Theorem}[section]  
-sections 
 \newtheorem{definition}[theorem]{Definition}    
-theorems 
 \newtheorem{corollary}[theorem]{Corollary} 
-theorems 
 \newtheorem{lemma}[theorem]{Lemma}  
-theorems 
 \begin{document} 
 \section{Introduction} 
 \begin{theorem} 
