@@ -1,0 +1,9 @@
+\documentclass{article}
+\usepackage{background}
+\usetikzlibrary{calc}
+\begin{document}
+\begin{tikzpicture}[remember picture,overlay]
+ \draw[line width = 2pt] ($(current page.north west) + (1in,-0.5in)$) rectangle 
+($(current page.south east) + (-0.5in,0.5in)$);
+\end{tikzpicture}
+\end{document}
