@@ -1,24 +1,26 @@
- \documentclass{standalone} 
-\usepackage{tikz} 
-\usetikzlibrary{graphs.standard} 
-\begin{document} 
-  \begin{tikzpicture} 
-                    \graph[nodes={circle,draw},simple] 
-                    { 
-                               subgraph K_n [n=8,clockwise]; 
-                    }; 
-\end{tikzpicture} 
-\begin{tikzpicture} 
-   \graph[nodes={circle,draw},simple] 
+#include<stdio.h> 
+int w[10],p[10],n; 
+int max(int a,int b) 
 { 
-           subgraph K_n [n=8, clockwise] -> mid; 
-}; 
-\end{tikzpicture} 
-\begin{tikzpicture} 
-\graph[nodes={circle,draw},simple] 
+return a>b?a:b; 
+} 
+int knap(int i,int m) 
 { 
-subgraph K_n [n=8,clockwise];  
-8 -!- 3 -!- 4 -!- 5 -!- 2; 
-}; 
-\end{tikzpicture} 
-\end{document} 
+if(i==n) return w[i]>m?0:p[i]; 
+if(w[i]>m) return knap(i+1,m); 
+return max(knap(i+1,m),knap(i+1,m-w[i])+p[i]); 
+} 
+int main() 
+{ 
+int m,i,max_profit; 
+printf("\nEnter the no. of objects:"); 
+scanf("%d",&n); 
+printf("\nEnter the knapsack capacity:"); 
+scanf("%d",&m); 
+printf("\nEnter profit followed by weight:\n"); 
+for(i=1; i<=n; i++) 
+scanf("%d %d",&p[i],&w[i]); 
+max_profit=knap(1,m); 
+printf("\nMax profit=%d",max_profit); 
+return 0; 
+} 
