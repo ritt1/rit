@@ -6,19 +6,18 @@
     { 
     box-shadow: 0 0 20px; 
     border-radius: 20px; 
-    margin: 80px; 
-    padding: 20px; 
-    display:inherit; 
+    margin: 100px; 
+    padding: 10px; 
+    
     } 
 button 
 { 
     margin: 10px; 
     padding: 10px; 
     background-color: crimson; 
-    color: white; 
+    color: white;
 } 
-button:hover  
-{ 
+button:hover{ 
     background-color: blue; 
 } 
 </style> 
@@ -26,24 +25,24 @@ button:hover
 <body> 
     <h1>jQuery Animation</h1> 
     <p id="para">Beautiful Countries</p> 
-    <ol id="myList"> 
-        <li>India</li> 
-        <li>Switzerland</li> 
-    </ol> 
+        <p>1.India</p> 
+        <p>2.Switzerland</p> 
+        <p>3.new plan </p>
+    
     <button id="one">Click to Append Country</button> <br><br> 
     <button id="Two">Click Here to see ANIMATION</button> 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
-    <script src="script.js"></script> 
+    <script src="style.js"></script> 
 </body> 
 </html> 
  
-Script.js 
  
+style.js
 $(document).ready(function ()  
 { 
     $('#one').click(function () { 
-        $('#para').append('. Text is Appended'); 
-        $('#myList').append('<li>New Place</li>'); 
+        $('#para').append(' Text is Appended'); 
+ 
     }); 
  
     $('#Two').click(function ()  
@@ -52,11 +51,9 @@ $(document).ready(function ()
         $(this).css('color', 'darkblue'); 
         $(this).animate({ 
             width: '500px', 
-            height: '250px', 
+            height: '150px', 
         }, 1000, function () { 
-            $(this).css('height', '60px'); 
-            $(this).css('width', '300px'); 
-            $(this).css('background-color', 'crimson'); 
+            $(this).css('height', '500px'); 
         }); 
     }); 
-}); 
+});
