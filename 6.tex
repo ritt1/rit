@@ -1,115 +1,59 @@
-lab 6 HTML ( calci.html ) 
-
 <html> 
 <head> 
-<meta charset="UTF-8"> 
-<title>calculator</title> 
-<link rel="stylesheet" href="calci.css"> 
-</head> 
-<body> 
-<h1>CALCULATOR</h1> 
-<table> 
-<tr> 
-<td>Enter First Number</td> 
-<td><input type="number" id="n1"/></td> 
-</tr> 
-<tr> 
-<td>Enter Second Number</td> 
-<td><input type="number" id="n2"></td> 
-</tr> 
-<tr> 
-<td><button onclick="calci('s')">Sum</button></td> 
-<td><button onclick="calci('d')">Difference</button></td> 
-<td><button onclick="calci('p')">Product</button></td> 
-<td><button onclick="calci('q')">Quotient</button></td> 
-</tr> 
-<tr> 
-<td><button onclick="calci('r')">Remainder</button></td> 
-<td><button onclick="calci('pw')">Power</button></td> 
-<td><button onclick="calci('sr')">Square Root</button></td> 
-<td><button onclick="calci('sq')">Square</button></td> 
-</tr>    
-</table> 
-<h2>Result</h2> 
-<h3 id="res"></h3> 
-<script src="calci.js"></script> 
-</body> 
-</html> 
-
-Lab 6  CSS ( calci.css ) 
-h1 
-{ 
-} 
-text-align: center; 
-color: crimson; 
-h2 
-{ 
-} 
-text-align: center; 
-color: palevioletred; 
-h3 
-{ 
-font-size: 50px; 
-text-align: center; 
-background-color: yellow; 
-} 
-table 
-{ 
-} 
-background-color: purple; 
-color: white; 
-margin: auto; 
-padding: 10px; 
+    <title>jQuery Script Example</title> 
+<style> 
+    body  
+    { 
+    box-shadow: 0 0 20px; 
+    border-radius: 20px; 
+    margin: 100px; 
+    padding: 10px; 
+    
+    } 
 button 
 { 
+    margin: 10px; 
+    padding: 10px; 
+    background-color: crimson; 
+    color: white;
 } 
-width: 100% ; 
-padding:10px; 
-background-color: crimson; 
-color: white; 
-input 
-{ 
+button:hover{ 
+    background-color: blue; 
 } 
-margin: 5px; 
-padding: 10px; 
-body 
+</style> 
+</head> 
+<body> 
+    <h1>jQuery Animation</h1> 
+    <p id="para">Beautiful Countries</p> 
+        <p>1.India</p> 
+        <p>2.Switzerland</p> 
+        <p>3.new plan </p>
+    
+    <button id="one">Click to Append Country</button> <br><br> 
+    <button id="Two">Click Here to see ANIMATION</button> 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+    <script src="style.js"></script> 
+</body> 
+</html> 
+ 
+ 
+style.js
+$(document).ready(function ()  
 { 
-} 
-display: grid; 
-border-radius: 40px; 
-box-shadow: 0 0 20px; 
-width: 600px; 
-height: 600px; 
-text-align: center; 
-margin: auto; 
-margin-top: 25px;
-}
-
-
-Lab 6 JS ( calci.js ) 
-function calci(task) 
-{ 
-const n1 = parseFloat(document.getElementById('n1').value); 
-const n2 = parseFloat(document.getElementById('n2').value); 
-let output = 0; 
-switch(task) 
-{ 
-case 's':  output = n1 +n2; 
-break; 
-case 'd':  output = n1 - n2; 
-break; 
-case 'p':  output = n1 * n2; 
-break; 
-case 'q':  output = n1/n2; 
-break; 
-case 'r':  output = n1 % n2; 
-break; 
-case 'pw':  output = Math.pow(n1,n2); 
-break; 
-case 'sr':  output = Math.sqrt(n1); 
-break; 
-case 'sq':  output = Math.pow(n1,2); 
-break; 
-} 
-document.getElementById("res").innerHTML= output; 
-}
+    $('#one').click(function () { 
+        $('#para').append(' Text is Appended'); 
+ 
+    }); 
+ 
+    $('#Two').click(function ()  
+    { 
+        $(this).css('background-color', 'yellow'); 
+        $(this).css('color', 'darkblue'); 
+        $(this).animate({ 
+            width: '500px', 
+            height: '150px', 
+        }, 1000, function () { 
+            $(this).css('height', '500px'); 
+        }); 
+    }); 
+});
