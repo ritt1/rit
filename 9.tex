@@ -6,14 +6,14 @@
     { 
     box-shadow: 0 0 20px; 
     border-radius: 20px; 
-    margin: 100px; 
+    
     padding: 10px; 
     
     } 
 button 
 { 
-    margin: 10px; 
-    padding: 10px; 
+    height: 50px; 
+    width: 250px; 
     background-color: crimson; 
     color: white;
 } 
@@ -32,12 +32,11 @@ button:hover{
     <button id="one">Click to Append Country</button> <br><br> 
     <button id="Two">Click Here to see ANIMATION</button> 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
-    <script src="style.js"></script> 
-</body> 
-</html> 
- 
- 
-style.js
+    <script src="style.js">
+</script>
+
+<script >
+
 $(document).ready(function ()  
 { 
     $('#one').click(function () { 
@@ -57,3 +56,8 @@ $(document).ready(function ()
         }); 
     }); 
 });
+</script>
+</body> 
+</html> 
+ 
+ 
