@@ -1,59 +1,70 @@
-<html> 
-<head> 
-    <title>jQuery Script Example</title> 
-<style> 
-    body  
-    { 
-    box-shadow: 0 0 20px; 
-    border-radius: 20px; 
-    margin: 100px; 
-    padding: 10px; 
-    
-    } 
-button 
-{ 
-    margin: 10px; 
-    padding: 10px; 
-    background-color: crimson; 
-    color: white;
-} 
-button:hover{ 
-    background-color: blue; 
-} 
-</style> 
-</head> 
-<body> 
-    <h1>jQuery Animation</h1> 
-    <p id="para">Beautiful Countries</p> 
-        <p>1.India</p> 
-        <p>2.Switzerland</p> 
-        <p>3.new plan </p>
-    
-    <button id="one">Click to Append Country</button> <br><br> 
-    <button id="Two">Click Here to see ANIMATION</button> 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
-    <script src="style.js"></script> 
-</body> 
-</html> 
- 
- 
-style.js
-$(document).ready(function ()  
-{ 
-    $('#one').click(function () { 
-        $('#para').append(' Text is Appended'); 
- 
-    }); 
- 
-    $('#Two').click(function ()  
-    { 
-        $(this).css('background-color', 'yellow'); 
-        $(this).css('color', 'darkblue'); 
-        $(this).animate({ 
-            width: '500px', 
-            height: '150px', 
-        }, 1000, function () { 
-            $(this).css('height', '500px'); 
-        }); 
-    }); 
-});
+<!DOCTYPE html>
+
+<head>
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            
+        }
+        .table {
+            height: 45vh;
+            background-color: wheat;
+        
+        }
+
+        h1 {
+            text-align: center;
+            border-radius: 20px;
+            background-color: black;
+            color: white;
+        }
+
+        button,
+        select,
+        input,
+        #result {
+            margin: 10px;
+            height: 30px;
+            width: 300px;
+            border: 2px black solid;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="table">
+        <form>
+            <h1>Simple Calculator</h1>
+            <input type="number" placeholder="Enter First Number" id="num1" required><br>
+            <input type="number" placeholder="Enter First Number" id="num2" required><br>
+            <select id="operation">
+                <option value="+">Sum</option>
+                <option value="-">Minus</option>
+                <option value="*">Multiply</option>
+                <option value="/">Divide</option>
+                <option value="%">Remainder</option>
+                <option value="**">Power</option>
+            </select><br>
+            <button>Calculate</button><br>
+        </form>
+    </div>
+    <script>
+        const form = document.querySelector('form');
+        const container = document.querySelector('.table')
+        form.addEventListener('submit', function (e) {
+            e.preventDefault()
+            const num1 = document.querySelector('#num1').value;
+            const num2 = document.querySelector('#num2').value;
+            const operation = document.querySelector('#operation').value
+            const statement = `${num1} ${operation} ${num2}`
+            const result = eval(statement);
+            const resultdiv = document.createElement('button')
+            resultdiv.innerHTML = result;
+            resultdiv.classList.add('result')
+            form.appendChild(resultdiv)
+        })
+    </script>
+</body>
+</html>
