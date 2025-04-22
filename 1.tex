@@ -1,40 +1,22 @@
-<html> 
-<head> 
-<title> My First Web Page </title> 
-</head> 
-<body> 
-<marquee> Basic HTML Tags </marquee> 
-<h1> RIT College </h1> 
-<h2> RIT College </h2> 
-<h3> RIT College </h3> 
-<h4> RIT College </h4> 
-<h5> RIT college </h5> 
-<h6> RIT College </h6> 
-<hr> 
-<p><u><b> RIT College of Engineering</b></u>, Hassan (NCEH) is a state-of-the-art technical 
-institution that provides an ideal atmosphere to the students to grow into world-class 
-engineers.<blockquote> It was started in the year 2009-10 by Yagachi Education and  Research Trust 
-and is under the patronage of rit Group of Institutions, Bengaluru, from the year 2019
-20.</blockquote> </p> 
-<pre>SL.NO    Name     
-01    
-  Name l    150 
- USN 
- 02      Name 2    151 
- 03      Name 3    152</pre> 
-<p> This is subscript H<sub>2</sub>O and This is superscript A<sup>2 </sup>B</p> 
-<!-- Different Logical Style tags -->
-    <p>This is <b>bold</b> text.</p>
-    <p>This is <i>italicized</i> text.</p>
-    <p>This is <u>underlined</u> text.</p>
-    <p>This is <sup>superscript</sup> text.</p>
-    <p>This is <sub>subscript</sub> text.</p>
-    <p>This is <em>emphasized</em> text.</p>
-    <p>This is <strong>strong</strong> text.</p>
-    <p>This is <mark>highlighted</mark> text.</p>
-    <p>This is <small>small</small> text.</p>
-    <p>This is <del>deleted</del> text.</p>
-    <p>This is <ins>inserted</ins> text.</p>
-    <p>This is <code>inline code</code> text.</p>
-</body> 
-</html> 
+import pandas as pd 
+import matplotlib.pyplot as plt 
+from sklearn.datasets import fetch_california_housing 
+# Load data 
+housing = fetch_california_housing(as_frame=True).frame 
+# Numerical columns 
+numeric_cols = housing.select_dtypes(include=['number']).columns 
+# Histograms 
+housing[numeric_cols].hist(figsize=(12, 10)) 
+plt.suptitle("Histograms") 
+plt.tight_layout() 
+plt.show() 
+# Box plots 
+plt.figure(figsize=(12, 10)) 
+for i, col in enumerate(numeric_cols): 
+plt.subplot(3, 3, i + 1) 
+housing.boxplot(column=col) 
+plt.title(col) 
+plt.suptitle("Box Plots") 
+plt.tight_layout() 
+plt.show() 
+print("Histograms and box plots generated.")
