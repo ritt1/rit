@@ -1,54 +1,8 @@
-<!DOCTYPE html> 
-<head> 
-    <title>Program 4</title> 
-    <style>
-    
-    h2{ 
-        color:black; 
-        text-align: center; 
-        } 
-        
-       
-
-        table{ 
-        margin:auto; 
-        background-color:blanchedalmond;  
-        }
-         
-        input[type="submit"]{ 
-        background-color:crimson; 
-        
-        }
-        </style> 
-</head> 
-<body> 
-    <h2>Registration Form</h2> 
-    <form> 
-        <table> 
-            <tr> 
-                <td><label>Name</label></td> 
-                <td><input type="text" placeholder="enter your name" required></td> 
-            </tr> 
-            <tr> 
-                <td><label>Email</label></td> 
-                <td><input type="email" placeholder="enter your email" required></td> 
-            </tr> 
-            <tr> 
-                <td><label >DOB</label></td> 
-                <td><input type="date"></td> 
-            </tr> 
-            <tr> 
-                <td><label>Gender</label></td> 
-                <td> 
-                    <select> 
-                        <option>Select</option> 
-                        <option>Male</option> 
-                        <option>Female</option> 
-                    </select> 
-                </td> 
-</tr> 
-<td><input type="submit"></td> 
-</table> 
-</form> 
-</body> 
-</html>
+import csv
+def find_s(f):
+    d = list(csv.reader(open(f)))[1:]
+    h = d[0][:-1]
+    for r in d[1:]:
+        if r[-1].lower()=='yes': h = [x if x==y else '?' for x,y in zip(h,r[:-1])]
+    return h
+print(find_s('training_data.csv'))
