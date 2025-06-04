@@ -1,59 +1,12 @@
-<html> 
-<head>  
-<title>Newspaper</title> 
+import numpy as np, matplotlib.pyplot as plt
+from sklearn.neighbors import KNeighborsClassifier
+X = np.random.rand(100,1); 
+y = (X[:50]<=0.5).astype(int).ravel()
+m = KNeighborsClassifier(3).fit(X[:50], y)
+plt.scatter(X[:50], y,label='train')
+plt.scatter(X[50:], m.predict(X[50:]), marker='x',label='predicted'); 
+plt.legend()
+plt.show()
 
-<style> 
-article:hover{ 
-background-color: aquamarine; 
-}
-</style> 
 
-</head> 
-<body> 
-<h1>HASSAN NEWSPAPER</h1> 
 
-<section>  
-<h2>Breaking News</h2> 
-
-<marquee direction="up"  scrollamont="2"> 
-<p>Rajeev Institute of technology Day</p> 
-<p>CM Visits Hasanamba Temple</p> 
-<p>Over 1.9 million devotees visited Hasanamba Temple in 2024</p> 
-</marquee> 
-
-        <div class="artdiv"> 
-        
-            <article> 
-            <h2>Article 1:BELUR</h2>  
-                <figcaption>Belur Temple</figcaption> 
-            </figure> 
-          <p>It is Beautiful Temple </p> 
-        </article> 
-        
-        <article> 
-            <h2>Article 2:HALEBIDU</h2> 
-                <figcaption>Halebidu Temple</figcaption> 
-            </figure> 
-                <p>It is Beautiful Temple </p> 
-        </article> 
-
-        <article> 
-            <h2>Article 3: NAVKIS</h2> 
-                <figcaption>Engineering College</figcaption> 
-            </figure> 
-<p>It is a Engineering college in Hassan.</p> 
-        </article> 
-
-        </div> 
-
-        <article> 
-            <h2>Sports News</h2> 
-            <p>Border - Gavaskar Trophy starts from Nov 22 , 2024</p> 
-        </article>
-
-    </section>     
-    <footer> 
-        <p>&copy; All Rights Reserved</p> 
-</footer> 
-</body> 
-</html> 
