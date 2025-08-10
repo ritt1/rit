@@ -1,0 +1,87 @@
+class Node: 
+    def __init__(self, key): 
+        self.key = key 
+        self.left = None 
+        self.right = None 
+ 
+def insert(node, key): 
+    if node is None: 
+        return Node(key) 
+    if key < node.key: 
+        node.left = insert(node.left, key) 
+    else: 
+        node.right = insert(node.right, key) 
+    return node 
+ 
+def inorder(root): 
+    if root: 
+        inorder(root.left) 
+        print(f"{root.key} -> ", end="") 
+        inorder(root.right) 
+ 
+def preorder(root): 
+    if root: 
+        print(f"{root.key} -> ", end="") 
+        preorder(root.left) 
+        preorder(root.right) 
+ 
+def postorder(root): 
+    if root: 
+        postorder(root.left) 
+        postorder(root.right) 
+        print(f"{root.key} -> ", end="") 
+ 
+def min_value_node(node): 
+    current = node 
+    while current.left: 
+        current = current.left 
+    return current 
+ 
+def delete_node(root, key): 
+    if root is None: 
+        return root 
+    if key < root.key: 
+        root.left = delete_node(root.left, key) 
+    elif key > root.key: 
+        root.right = delete_node(root.right, key) 
+    else: 
+        if root.left is None: 
+            return root.right 
+        elif root.right is None: 
+            return root.left 
+        temp = min_value_node(root.right) 
+        root.key = temp.key 
+        root.right = delete_node(root.right, temp.key) 
+    return root 
+ 
+def main(): 
+    root = None 
+    while True: 
+        print("\n1. Insertion\n2. Deletion\n3. Inorder\n4. Preorder\n5. Postorder\n6. Exit") 
+        choice = input("Enter your choice: ") 
+        if choice == '1': 
+            value = int(input("Enter the value to insert: ")) 
+            root = insert(root, value) 
+        elif choice == '2': 
+            value = int(input("Enter the value to delete: ")) 
+            root = delete_node(root, value) 
+        elif choice == '3': 
+            print("Inorder Traversal: ", end="") 
+            inorder(root) 
+            print() 
+        elif choice == '4': 
+            print("Preorder Traversal: ", end="") 
+            preorder(root) 
+            print() 
+        elif choice == '5': 
+            print("Postorder Traversal: ", end="") 
+            postorder(root) 
+            print() 
+        elif choice == '6': 
+            print("Exiting...") 
+            break 
+        else: 
+            print("Wrong selection! Try again!") 
+ 
+if __name__ == "__main__": 
+    main()
