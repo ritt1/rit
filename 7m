@@ -1,0 +1,63 @@
+class EmployeeRecord: 
+    def __init__(self, emp_id, name): 
+        self.emp_id = emp_id 
+        self.name = name 
+ 
+    def __str__(self): 
+        return f"ID: {self.emp_id}, Name: {self.name}" 
+ 
+class HashTable: 
+    def __init__(self, size): 
+        self.size = size 
+        self.table = [None] * size 
+ 
+    def hash_function(self, key): 
+        return key % self.size 
+ 
+    def insert(self, emp_id, name): 
+        index = self.hash_function(emp_id) 
+        start_index = index 
+ 
+        while self.table[index] is not None and self.table[index].emp_id != -1: 
+            if self.table[index].emp_id == emp_id: 
+                print(f"Duplicate key {emp_id} not allowed.") 
+                return 
+            index = (index + 1) % self.size 
+            if index == start_index: 
+                print("Hash Table is full. Cannot insert more records.") 
+                return 
+ 
+        self.table[index] = EmployeeRecord(emp_id, name) 
+        print(f"Inserted: {emp_id} -> {name} at index {index}") 
+ 
+    def display(self): 
+        print("\nHash Table Contents:") 
+        for i, record in enumerate(self.table): 
+            if record is None: 
+                print(f"Index {i:02}: Empty") 
+            else: 
+                print(f"Index {i:02}: {record}") 
+ 
+def main(): 
+    m = int(input("Enter the size of the hash table (e.g., 10): ")) 
+    n = int(input("Enter the number of employee records to insert: ")) 
+    ht = HashTable(m) 
+ 
+    print("\nEnter employee records (4-digit ID and Name):") 
+    for _ in range(n): 
+        while True: 
+            try: 
+                emp_id = int(input("Employee ID (4-digit): ")) 
+                if 1000 <= emp_id <= 9999: 
+                    break 
+                else: 
+                    print("ID must be a 4-digit number.") 
+            except ValueError: 
+                print("Please enter a valid integer.") 
+        name = input("Employee Name: ") 
+        ht.insert(emp_id, name) 
+ 
+    ht.display() 
+ 
+if __name__ == "__main__": 
+    main()
