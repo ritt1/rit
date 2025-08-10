@@ -1,0 +1,98 @@
+class BPTreeNode: 
+    def __init__(self): 
+        self.data = [] 
+        self.child_ptr = [None] * 6 
+        self.leaf = True 
+        self.n = 0 
+ 
+root = None 
+ 
+def traverse(p): 
+    if p is not None: 
+        for i in range(p.n): 
+            if not p.leaf: 
+                traverse(p.child_ptr[i]) 
+            print(f" {p.data[i]}", end='') 
+        if not p.leaf: 
+            traverse(p.child_ptr[p.n]) 
+ 
+def sort(p): 
+    p.sort() 
+ 
+def split_child(x, i): 
+    global root 
+    np3 = BPTreeNode() 
+    np3.leaf = True 
+    if i == -1: 
+        mid = x.data[2] 
+        np3.data = x.data[3:5] 
+        np3.n = len(np3.data) 
+        x.data = x.data[0:2] 
+        x.n = len(x.data) 
+ 
+        np1 = BPTreeNode() 
+        np1.leaf = False 
+        np1.data = [mid] 
+        np1.n = 1 
+        np1.child_ptr[0] = x 
+        np1.child_ptr[1] = np3 
+        root = np1 
+    else: 
+        y = x.child_ptr[i] 
+        mid = y.data[2] 
+        np3.data = y.data[3:5] 
+        np3.n = len(np3.data) 
+        y.data = y.data[0:2] 
+        y.n = len(y.data) 
+ 
+        x.child_ptr[i + 1] = np3 
+    return mid 
+ 
+def insert(a): 
+    global root 
+    x = root 
+    if x is None: 
+        root = BPTreeNode() 
+        x = root 
+    else: 
+        if x.leaf and x.n == 5: 
+            temp = split_child(x, -1) 
+            x = root 
+            for i in range(x.n): 
+                if a < x.data[0]: 
+                    idx = 0 
+                    break 
+                elif i + 1 == x.n or (x.data[i] < a < x.data[i + 1]): 
+                    idx = i + 1 
+                    break 
+            x = x.child_ptr[idx] 
+        else: 
+            while not x.leaf: 
+                for i in range(x.n): 
+                    if a < x.data[0]: 
+                        idx = 0 
+                        break 
+                    elif i + 1 == x.n or (x.data[i] < a < x.data[i + 1]): 
+                        idx = i + 1 
+                        break 
+                if x.child_ptr[idx].n == 5: 
+                    temp = split_child(x, idx) 
+                    x.data.append(temp) 
+                    x.n += 1 
+                    x.data.sort() 
+                    continue 
+                else: 
+                    x = x.child_ptr[idx] 
+    x.data.append(a) 
+    sort(x.data) 
+    x.n += 1 
+def main(): 
+    n = int(input("Enter the number of elements to be inserted: ")) 
+    for i in range(n): 
+        t = int(input("Enter the element: ")) 
+        insert(t) 
+    print("Traversal of constructed tree:") 
+    traverse(root) 
+ 
+if __name__ == "__main__": 
+    main()
