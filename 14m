@@ -1,0 +1,39 @@
+import java.math.BigInteger; 
+import java.util.Scanner; 
+
+public class DiffieHell { 
+
+    public static void main(String args[]) { 
+
+        Scanner sc = new Scanner(System.in); 
+
+        System.out.print("Enter modulo (p): "); 
+        BigInteger p = sc.nextBigInteger(); 
+
+        System.out.print("Enter primitive root of " + p + " (g): "); 
+        BigInteger g = sc.nextBigInteger(); 
+
+        System.out.print("Choose 1st secret no (Alice): "); 
+        BigInteger a = sc.nextBigInteger(); 
+
+        System.out.print("Choose 2nd secret no (Bob): "); 
+        BigInteger b = sc.nextBigInteger(); 
+
+        // Compute public keys 
+        BigInteger A = g.modPow(a, p); // A = g^a mod p 
+        BigInteger B = g.modPow(b, p); // B = g^b mod p 
+
+        // Compute shared secrets 
+        BigInteger S_A = B.modPow(a, p); // Alice computes B^a mod p 
+        BigInteger S_B = A.modPow(b, p); // Bob computes A^b mod p 
+
+        if (S_A.equals(S_B)) { 
+            System.out.println("Alice and Bob can communicate with each other!!!"); 
+            System.out.println("They share a secret number = " + S_A); 
+        } else { 
+            System.out.println("Alice and Bob cannot communicate with each other!!!"); 
+        } 
+
+        sc.close(); 
+    } 
+}
