@@ -1,16 +1,41 @@
-from sklearn.datasets import fetch_olivetti_faces 
-from sklearn.model_selection import train_test_split 
-from sklearn.naive_bayes import GaussianNB 
-from sklearn.metrics import accuracy_score 
-import matplotlib.pyplot as plt 
+import javax.crypto.Cipher; 
+import javax.crypto.KeyGenerator; 
+import javax.crypto.SecretKey; 
+import javax.swing.JOptionPane; 
 
-X,y=fetch_olivetti_faces(return_X_y=True) 
-Xt,Xs,yt,ys=train_test_split(X,y,test_size=0.3) 
-p=GaussianNB().fit(Xt,yt).predict(Xs) 
+public class BlowFishCipher { 
 
-print("Acc:",accuracy_score(ys,p)) 
-plt.imshow(Xs[0].reshape(64,64),cmap='gray'); 
-plt.title(f"T:{ys[0]} P:{p[0]}");
+    public static void main(String[] args) throws Exception { 
 
-plt.axis('off'); 
-plt.show() 
+        // Create a key generator for Blowfish 
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("Blowfish"); 
+
+        // Generate secret key 
+        SecretKey secretKey = keyGenerator.generateKey(); 
+
+        // Create cipher object 
+        Cipher cipher = Cipher.getInstance("Blowfish"); 
+
+        // Initialize cipher for encryption 
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey); 
+
+        // Get input text from user 
+        String inputText = JOptionPane.showInputDialog("Input your message:"); 
+
+        // Encrypt the message 
+        byte[] encrypted = cipher.doFinal(inputText.getBytes()); 
+
+        // Re-initialize cipher for decryption 
+        cipher.init(Cipher.DECRYPT_MODE, secretKey); 
+
+        // Decrypt the message 
+        byte[] decrypted = cipher.doFinal(encrypted); 
+
+        // Display encrypted and decrypted text 
+        JOptionPane.showMessageDialog(null, 
+                "Encrypted text: " + new String(encrypted) + 
+                "\nDecrypted text: " + new String(decrypted) ); 
+
+        System.exit(0); 
+    } 
+}
