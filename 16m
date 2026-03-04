@@ -1,0 +1,27 @@
+import java.security.*; 
+import java.util.Base64; 
+
+public class ShortDSASignature { 
+
+    public static void main(String[] args) throws Exception { 
+
+        String msg = "Hello DSA"; 
+
+        // Generate DSA key pair 
+        KeyPair kp = KeyPairGenerator.getInstance("DSA").generateKeyPair(); 
+
+        // Sign 
+        Signature s = Signature.getInstance("SHA256withDSA"); 
+        s.initSign(kp.getPrivate()); 
+        s.update(msg.getBytes()); 
+        byte[] sig = s.sign(); 
+
+        System.out.println("Message: " + msg); 
+        System.out.println("Signature: " + Base64.getEncoder().encodeToString(sig)); 
+
+        // Verify 
+        s.initVerify(kp.getPublic()); 
+        s.update(msg.getBytes()); 
+        System.out.println("Verified: " + s.verify(sig)); 
+    } 
+}
