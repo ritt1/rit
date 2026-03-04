@@ -14,7 +14,6 @@ for(i=0; i<len; i++)
 str1[i] = str[i]&127;  
 printf("%c",str1[i]);  
 }  
-
 printf("\n");  
 
 for(i=0;i<len;i++)  
