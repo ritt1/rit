@@ -1,0 +1,51 @@
+#include <stdio.h> 
+#include <string.h> 
+
+int main() { 
+
+char a[100], fs[200] = "", sd, ed; 
+int i; 
+
+printf("Enter characters to be stuffed: "); 
+scanf("%s", a); 
+
+printf("Enter starting delimiter: "); 
+scanf(" %c", &sd); 
+
+printf("Enter ending delimiter: "); 
+scanf(" %c", &ed); 
+
+// Add starting delimiter 
+strncat(fs, &sd, 1); 
+
+// Character stuffing 
+for(i = 0; i < strlen(a); i++)  
+{ 
+    if(a[i] == sd || a[i] == ed)  
+    { 
+        fs[strlen(fs)] = sd; 
+    } 
+    fs[strlen(fs)] = a[i]; 
+    fs[strlen(fs)] = '\0'; 
+} 
+
+// Add ending delimiter 
+strncat(fs, &ed, 1); 
+
+printf("\nFramed and stuffed data: %s\n", fs); 
+
+// Simulate unstuffing 
+char unstuffed[100] = ""; 
+for(i = 1; i < strlen(fs)-1; i++)  
+{  
+    if(fs[i] == sd && (fs[i+1] == sd || fs[i+1] == ed))  
+    { 
+        i++; 
+    } 
+    strncat(unstuffed, &fs[i], 1); 
+} 
+
+printf("Unstuffed data: %s\n", unstuffed); 
+
+return 0; 
+}
