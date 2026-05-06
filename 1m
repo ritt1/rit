@@ -1,22 +1,38 @@
-#include<stdlib.h>  
+void setup(){
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+}
 
-main() 
+void loop(){
 
-{ 
-char str[]="Hello World"; 
+  // Forward
+  digitalWrite(2, HIGH); delay(1000);
+  digitalWrite(2, LOW);  delay(100);
 
-char str1[11]; int i,len; len=strlen(str);  
+  digitalWrite(3, HIGH); delay(1000);
+  digitalWrite(3, LOW);  delay(100);
 
-for(i=0;i<len;i++) 
+  digitalWrite(4, HIGH); delay(1000);
+  digitalWrite(4, LOW);  delay(100);
 
-{ 
+  digitalWrite(5, HIGH); delay(1000);
+  digitalWrite(5, LOW);  delay(100);
 
-str1[i]=str[i]^0;  
+  digitalWrite(6, HIGH); delay(1000);
+  digitalWrite(6, LOW);  delay(100);
 
-printf("%c",str1[i]); 
+  // Reverse
+  digitalWrite(5, HIGH); delay(1000);
+  digitalWrite(5, LOW);  delay(100);
 
-} 
+  digitalWrite(4, HIGH); delay(1000);
+  digitalWrite(4, LOW);  delay(100);
 
-printf("\n"); 
+  digitalWrite(3, HIGH); delay(1000);
+  digitalWrite(3, LOW);  delay(100);
 
-} 
+  digitalWrite(2, HIGH); delay(1000);
+}
