@@ -1,0 +1,14 @@
+void setup(){
+  pinMode(9,HIGH);
+}
+
+void loop(){
+if(analogRead(A0)<100)
+{
+digitalWrite(9,HIGH);
+delay(1000);
+digitalWrite(9,LOW);
+  }else 
+  digitalWrite(9,LOW);
+  delay(200);
+}
