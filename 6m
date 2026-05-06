@@ -1,51 +1,14 @@
-import javax.crypto.Cipher; 
-import javax.crypto.SecretKey; 
-import javax.crypto.SecretKeyFactory; 
-import javax.crypto.spec.DESedeKeySpec; 
-import java.nio.charset.StandardCharsets; 
-import java.util.Base64; 
-import java.io.BufferedReader; 
-import java.io.InputStreamReader; 
+void setup(){
+  pinMode(7,1);
+  pinMode(6,1);
+  pinMode(5,1);
+  Serial.begin(9600);}
 
-public class DES { 
-
-    private static final String ALGORITHM = "DESede"; 
-    private static final String SECRET_KEY = "ThisIsSecretEncryptionKey"; 
-
-    private Cipher cipher; 
-    private SecretKey key; 
-
-    public DES() throws Exception { 
-        byte[] keyBytes = SECRET_KEY.getBytes(StandardCharsets.UTF_8); 
-        DESedeKeySpec keySpec = new DESedeKeySpec(keyBytes); 
-        SecretKeyFactory factory = SecretKeyFactory.getInstance(ALGORITHM); 
-        key = factory.generateSecret(keySpec); 
-        cipher = Cipher.getInstance(ALGORITHM); 
-    } 
-
-    public String encrypt(String text) throws Exception { 
-        cipher.init(Cipher.ENCRYPT_MODE, key); 
-        byte[] encrypted = cipher.doFinal(text.getBytes(StandardCharsets.UTF_8)); 
-        return Base64.getEncoder().encodeToString(encrypted); 
-    } 
-
-    public String decrypt(String encryptedText) throws Exception { 
-        cipher.init(Cipher.DECRYPT_MODE, key); 
-        byte[] decoded = Base64.getDecoder().decode(encryptedText); 
-        return new String(cipher.doFinal(decoded), StandardCharsets.UTF_8); 
-    } 
-
-    public static void main(String[] args) throws Exception { 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
-        System.out.print("Enter the string: "); 
-        String input = br.readLine(); 
-
-        DES des = new DES(); 
-        String encrypted = des.encrypt(input); 
-        String decrypted = des.decrypt(encrypted); 
-
-        System.out.println("\nOriginal  : " + input); 
-        System.out.println("Encrypted : " + encrypted); 
-        System.out.println("Decrypted : " + decrypted); 
-    } 
+void loop(){
+  float m=analogRead(A0)*100.0/539;
+  digitalWrite(7,m<25); 
+  digitalWrite(6,m>=25 && m<80); 
+  digitalWrite(5,m>=80);
+  Serial.println(m);
+  delay(1000);
 }
