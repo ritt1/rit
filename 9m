@@ -1,41 +1,108 @@
-import javax.crypto.Cipher; 
-import javax.crypto.KeyGenerator; 
-import javax.crypto.SecretKey; 
-import javax.swing.JOptionPane; 
+#include <Adafruit_LiquidCrystal.h>
+#include <EEPROM.h>
 
-public class BlowFishCipher { 
+Adafruit_LiquidCrystal lcd(0);
 
-    public static void main(String[] args) throws Exception { 
+int tPin=A0,hPin=A2,pPin=A1;
+int btn[]={3,4,5,6,9};
+int led[]={7,8};
 
-        // Create a key generator for Blowfish 
-        KeyGenerator keyGenerator = KeyGenerator.getInstance("Blowfish"); 
+float t,h,p,dp;
+float tmin=100,tmax=-100,hmin=100,hmax=0,pmin=1000,pmax=0;
+float tTh=30,hTh=80;
+float ph[10]; 
+int hi=0,ei=0,screen=0;
+String fc="N/A";
 
-        // Generate secret key 
-        SecretKey secretKey = keyGenerator.generateKey(); 
+// Dew Point
+float dew(float T,float H){
+  float a=17.27,b=237.7;
+  float al=((a*T)/(b+T))+log(H/100.0);
+  return (b*al)/(a-al);
+}
 
-        // Create cipher object 
-        Cipher cipher = Cipher.getInstance("Blowfish"); 
+// EEPROM
+void logEEP(){
+  int ad=ei*12; 
+  if(ad+12>=EEPROM.length()) ei=0;
+  EEPROM.put(ad,t);
+  EEPROM.put(ad+4,h);
+  EEPROM.put(ad+8,p);
+  ei++;
+}
 
-        // Initialize cipher for encryption 
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey); 
+// Sensor Read
+void readS(){
+  t=analogRead(tPin)*5.0/1024*100;
+  h=map(analogRead(hPin),0,1023,0,100);
+  p=analogRead(pPin)/10.0;
+  dp=dew(t,h);
 
-        // Get input text from user 
-        String inputText = JOptionPane.showInputDialog("Input your message:"); 
+  if(t<tmin)tmin=t; if(t>tmax)tmax=t;
+  if(h<hmin)hmin=h; if(h>hmax)hmax=h;
+  if(p<pmin)pmin=p; if(p>pmax)pmax=p;
 
-        // Encrypt the message 
-        byte[] encrypted = cipher.doFinal(inputText.getBytes()); 
+  ph[hi]=p; hi=(hi+1)%10;
+  logEEP();
+}
 
-        // Re-initialize cipher for decryption 
-        cipher.init(Cipher.DECRYPT_MODE, secretKey); 
+// Alert
+void alert(){
+  digitalWrite(led[0],t>tTh);
+  digitalWrite(led[1],h>hTh);
+}
 
-        // Decrypt the message 
-        byte[] decrypted = cipher.doFinal(encrypted); 
+// Forecast
+void forecast(){
+  float pc=ph[9]-ph[6];
+  if(pc<-2 && h>70) fc="Rain expected";
+  else if(pc>2 && h<50) fc="Clear skies";
+  else if(t>30) fc="Hot weather";
+  else if(t<5) fc="Cold/Frost";
+  else fc="Stable";
+}
 
-        // Display encrypted and decrypted text 
-        JOptionPane.showMessageDialog(null, 
-                "Encrypted text: " + new String(encrypted) + 
-                "\nDecrypted text: " + new String(decrypted) ); 
+// Display
+void show(){
+  lcd.clear();
+  if(screen==0){
+    lcd.setCursor(0,0); lcd.print("T:"); lcd.print(t);
+    lcd.print(" H:"); lcd.print(h);
+    lcd.setCursor(0,1); lcd.print("P:"); lcd.print(p);
+  }
+  else if(screen==1){
+    lcd.setCursor(0,0); lcd.print("Tmin:"); lcd.print(tmin);
+    lcd.print(" Tmax:"); lcd.print(tmax);
+    lcd.setCursor(0,1); lcd.print("Hmin:"); lcd.print(hmin);
+    lcd.print(" Hmax:"); lcd.print(hmax);
+  }
+  else{
+    lcd.setCursor(0,0); lcd.print("Forecast:");
+    lcd.setCursor(0,1); lcd.print(fc);
+  }
+}
 
-        System.exit(0); 
-    } 
+// Button
+void button(){
+  for(int i=0;i<5;i++)
+    if(!digitalRead(btn[i])){
+      screen=i%3; show(); delay(300);
+    }
+}
+
+void setup(){
+  lcd.begin(16,2); lcd.setBacklight(1);
+  for(int i=0;i<5;i++) pinMode(btn[i],INPUT_PULLUP);
+  for(int i=0;i<2;i++) pinMode(led[i],OUTPUT);
+  lcd.print("Weather Station");
+  delay(2000); lcd.clear();
+}
+
+void loop(){
+  readS();
+  alert();
+  forecast();
+  show();
+  button();
+  delay(2000);
 }
