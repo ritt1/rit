@@ -1,55 +1,24 @@
-import java.security.*; 
+#include <Adafruit_LiquidCrystal.h>
+#include <Keypad.h>
 
-public class SHA1 {  
+Adafruit_LiquidCrystal l1(0x20),l2(0x21);
 
-public static void main(String[] a) { 
-try {  
+char k[4][4]={{'1','2','3','A'},{'4','5','6','B'},{'7','8','9','C'},{'*','0','#','D'}};
+byte r[4]={9,8,7,6},c[4]={5,4,3,2};
 
-MessageDigest md = MessageDigest.getInstance("SHA1");  
+Keypad kp=Keypad(makeKeymap(k),r,c,4,4);
 
-System.out.println("Message digest object info: ");  
-System.out.println(" Algorithm = " + md.getAlgorithm());  
-System.out.println(" Provider = " + md.getProvider());  
-System.out.println(" ToString = " + md.toString());  
+int n;
 
-String input = "";  
-md.update(input.getBytes()); 
-byte[] output = md.digest();  
+void setup(){
+  l1.begin(16,2); l2.begin(16,2);
+  l1.print("Total Key Press:"); l2.print("Enter Key Value:");
+}
 
-System.out.println();  
-System.out.println("SHA1(\""+input+"\") = " + bytesToHex(output));  
-
-input = "abc"; 
-md.update(input.getBytes());  
-output = md.digest();  
-
-System.out.println();  
-System.out.println("SHA1(\""+input+"\") = " + bytesToHex(output));  
-
-input = "abcdefghijklmnopqrstuvwxyz";  
-md.update(input.getBytes());  
-output = md.digest();  
-
-System.out.println();  
-System.out.println("SHA1(\"" + input+"\") = " + bytesToHex(output));  
-System.out.println();  
-
-} catch (Exception e) {  
-System.out.println("Exception: " + e);  
-}  
-}  
-
-public static String bytesToHex(byte[] b) {  
-
-char hexDigit[] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};  
-
-StringBuffer buf = new StringBuffer();  
-
-for (int j = 0; j < b.length; j++) {  
-buf.append(hexDigit[(b[j] >> 4) & 0x0f]);  
-buf.append(hexDigit[b[j] & 0x0f]);  
-}  
-
-return buf.toString();  
-}  
+void loop(){
+  char x=kp.getKey();
+  if(x){
+    l2.setCursor(4,1); l2.print(x);
+    l1.setCursor(0,1); l1.print(++n);
+  }
 }
