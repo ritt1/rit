@@ -1,108 +1,41 @@
-#include <Adafruit_LiquidCrystal.h>
-#include <EEPROM.h>
+#include <mpi.h>
+#include <stdio.h>
 
-Adafruit_LiquidCrystal lcd(0);
+int main(int argc, char *argv[]) {
+ int rank, size;
+ int value, sum, prod, max, min;
+ int all_sum, all_prod, all_max, all_min;
 
-int tPin=A0,hPin=A2,pPin=A1;
-int btn[]={3,4,5,6,9};
-int led[]={7,8};
+ MPI_Init(&argc, &argv);
+ MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+ MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-float t,h,p,dp;
-float tmin=100,tmax=-100,hmin=100,hmax=0,pmin=1000,pmax=0;
-float tTh=30,hTh=80;
-float ph[10]; 
-int hi=0,ei=0,screen=0;
-String fc="N/A";
+ value = rank + 1;
+ printf("Process %d has value %d\n", rank, value);
 
-// Dew Point
-float dew(float T,float H){
-  float a=17.27,b=237.7;
-  float al=((a*T)/(b+T))+log(H/100.0);
-  return (b*al)/(a-al);
-}
+ MPI_Reduce(&value, &sum, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+ MPI_Reduce(&value, &prod, 1, MPI_INT, MPI_PROD, 0, MPI_COMM_WORLD);
+ MPI_Reduce(&value, &max, 1, MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD);
+ MPI_Reduce(&value, &min, 1, MPI_INT, MPI_MIN, 0, MPI_COMM_WORLD);
 
-// EEPROM
-void logEEP(){
-  int ad=ei*12; 
-  if(ad+12>=EEPROM.length()) ei=0;
-  EEPROM.put(ad,t);
-  EEPROM.put(ad+4,h);
-  EEPROM.put(ad+8,p);
-  ei++;
-}
+ if (rank == 0) {
+ printf("\n--- Results from MPI_Reduce (only at root) ---\n");
+ printf("Sum = %d\n", sum);
+ printf("Product = %d\n", prod);
+ printf("Maximum = %d\n", max);
+ printf("Minimum = %d\n", min);
+ }
 
-// Sensor Read
-void readS(){
-  t=analogRead(tPin)*5.0/1024*100;
-  h=map(analogRead(hPin),0,1023,0,100);
-  p=analogRead(pPin)/10.0;
-  dp=dew(t,h);
+ MPI_Allreduce(&value, &all_sum, 1, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
+ MPI_Allreduce(&value, &all_prod, 1, MPI_INT, MPI_PROD, MPI_COMM_WORLD);
+ MPI_Allreduce(&value, &all_max, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
+ MPI_Allreduce(&value, &all_min, 1, MPI_INT, MPI_MIN, MPI_COMM_WORLD);
 
-  if(t<tmin)tmin=t; if(t>tmax)tmax=t;
-  if(h<hmin)hmin=h; if(h>hmax)hmax=h;
-  if(p<pmin)pmin=p; if(p>pmax)pmax=p;
+ printf("\nProcess %d - Results from MPI_Allreduce:\n", rank);
+ printf("All-Sum = %d, All-Prod = %d, All-Max = %d, All-Min = %d\n",
+ all_sum, all_prod, all_max, all_min);
 
-  ph[hi]=p; hi=(hi+1)%10;
-  logEEP();
-}
+ MPI_Finalize();
 
-// Alert
-void alert(){
-  digitalWrite(led[0],t>tTh);
-  digitalWrite(led[1],h>hTh);
-}
-
-// Forecast
-void forecast(){
-  float pc=ph[9]-ph[6];
-  if(pc<-2 && h>70) fc="Rain expected";
-  else if(pc>2 && h<50) fc="Clear skies";
-  else if(t>30) fc="Hot weather";
-  else if(t<5) fc="Cold/Frost";
-  else fc="Stable";
-}
-
-// Display
-void show(){
-  lcd.clear();
-  if(screen==0){
-    lcd.setCursor(0,0); lcd.print("T:"); lcd.print(t);
-    lcd.print(" H:"); lcd.print(h);
-    lcd.setCursor(0,1); lcd.print("P:"); lcd.print(p);
-  }
-  else if(screen==1){
-    lcd.setCursor(0,0); lcd.print("Tmin:"); lcd.print(tmin);
-    lcd.print(" Tmax:"); lcd.print(tmax);
-    lcd.setCursor(0,1); lcd.print("Hmin:"); lcd.print(hmin);
-    lcd.print(" Hmax:"); lcd.print(hmax);
-  }
-  else{
-    lcd.setCursor(0,0); lcd.print("Forecast:");
-    lcd.setCursor(0,1); lcd.print(fc);
-  }
-}
-
-// Button
-void button(){
-  for(int i=0;i<5;i++)
-    if(!digitalRead(btn[i])){
-      screen=i%3; show(); delay(300);
-    }
-}
-
-void setup(){
-  lcd.begin(16,2); lcd.setBacklight(1);
-  for(int i=0;i<5;i++) pinMode(btn[i],INPUT_PULLUP);
-  for(int i=0;i<2;i++) pinMode(led[i],OUTPUT);
-  lcd.print("Weather Station");
-  delay(2000); lcd.clear();
-}
-
-void loop(){
-  readS();
-  alert();
-  forecast();
-  show();
-  button();
-  delay(2000);
+ return 0;
 }
