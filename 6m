@@ -1,14 +1,50 @@
-void setup(){
-  pinMode(7,1);
-  pinMode(6,1);
-  pinMode(5,1);
-  Serial.begin(9600);}
+#include <mpi.h>
+#include <stdio.h>
 
-void loop(){
-  float m=analogRead(A0)*100.0/539;
-  digitalWrite(7,m<25); 
-  digitalWrite(6,m>=25 && m<80); 
-  digitalWrite(5,m>=80);
-  Serial.println(m);
-  delay(1000);
+int main(int argc, char *argv[]) 
+{
+ int rank, size, data = 100;
+
+ MPI_Init(&argc, &argv);
+ MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+ MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+ if (size != 2) 
+{
+ if (rank == 0)
+ printf("This program requires exactly 2 processes.\n");
+ MPI_Finalize();
+ return 1;
+ }
+
+ printf("=== Running Deadlock Scenario ===\n");
+
+ if (rank == 0) {
+ MPI_Send(&data, 1, MPI_INT, 1, 0, MPI_COMM_WORLD);
+ MPI_Recv(&data, 1, MPI_INT, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+ printf("Process 0 received data: %d\n", data);
+ } else if (rank == 1) {
+ MPI_Send(&data, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
+ MPI_Recv(&data, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+ printf("Process 1 received data: %d\n", data);
+ }
+
+ MPI_Barrier(MPI_COMM_WORLD);
+
+ printf("\n=== Running Deadlock-Free Version ===\n");
+
+ if (rank == 0) 
+{
+ MPI_Send(&data, 1, MPI_INT, 1, 0, MPI_COMM_WORLD);
+ MPI_Recv(&data, 1, MPI_INT, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+ printf("Process 0 received data: %d\n", data);
+ } else if (rank == 1) {
+ MPI_Recv(&data, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+ MPI_Send(&data, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
+ printf("Process 1 received data: %d\n", data);
+ }
+
+ MPI_Finalize();
+
+ return 0;
 }
