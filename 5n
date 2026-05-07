@@ -1,0 +1,10 @@
+#include<mpi.h>
+#include<stdio.h>
+int main(int c,char**v){
+int r; char m[]="Hello from Process 0";
+MPI_Init(&c,&v); MPI_Comm_rank(MPI_COMM_WORLD,&r);
+if(!r){MPI_Send(m,sizeof(m),MPI_CHAR,1,0,MPI_COMM_WORLD);
+printf("Process 0 sent message: %s\n",m);}
+else if(r==1){MPI_Recv(m,sizeof(m),MPI_CHAR,0,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+printf("Process 1 received message: %s\n",m);}
+MPI_Finalize();}
