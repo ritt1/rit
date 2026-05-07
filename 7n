@@ -1,0 +1,9 @@
+#include<mpi.h>
+#include<stdio.h>
+int main(int c,char**v){
+int r,d=42;
+MPI_Init(&c,&v); MPI_Comm_rank(MPI_COMM_WORLD,&r);
+if(!r) printf("Process %d broadcasting data = %d\n",r,d);
+MPI_Bcast(&d,1,MPI_INT,0,MPI_COMM_WORLD);
+printf("Process %d received data = %d\n",r,d);
+MPI_Finalize();}
